@@ -40,8 +40,9 @@ class UsersController < ApplicationController
   # POST /user/:id/goods
   def user_goods
     @user = User.find_by(id: params[:id])
-    @goods = GoodsAndService.all.where(user_id: @user.id).order(created_at: :desc)
-    render json: @goods
+    @items = Item.all.where(user_id: @user.id).order(created_at: :desc)
+    @skills = Skill.all.where(user_id: @user.id).order(created_at: :desc)
+    render json: @items + @skills
   end
 
   # PATCH/PUT /users/1
