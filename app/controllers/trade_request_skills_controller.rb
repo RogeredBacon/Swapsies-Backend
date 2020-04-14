@@ -5,7 +5,7 @@ class TradeRequestSkillsController < ApplicationController
 
   # GET /trade_requests_items
   def index
-    @trade_request_skills = TradeRequestItem.all
+    @trade_request_skills = TradeRequestSkill.all
 
     render json: @trade_request_skills
   end
@@ -18,7 +18,7 @@ class TradeRequestSkillsController < ApplicationController
 
   # POST /trade_request
   def create
-    @trade_request_skill = TradeRequestItem.new(trade_request_id: params[:trade_request_id], skills_id: params[:skills_id])
+    @trade_request_skill = TradeRequestSkill.new(trade_request_id: params[:trade_request_id], skill_id: params[:skill_id], locked: params[:locked], amount: params[:amount])
 
     if @trade_request_skill.save
       render json: @trade_request_skill, status: :created, location: @trade_request_skill
@@ -50,7 +50,7 @@ class TradeRequestSkillsController < ApplicationController
   # end
 
   # Only allow a trusted parameter "white list" through.
-  def trade_request_skills_params
-    params.require(:trade_request_skills).permit(:id, :trade_request_id, :skills_id, :locked, :amount)
+  def trade_request_skill_params
+    params.require(:trade_request_skill).permit(:id, :trade_request_id, :skill_id, :locked, :amount)
   end
 end

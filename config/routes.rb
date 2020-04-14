@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   post '/trade_request_items', to: 'trade_request_items#create'
 
-  post '/goods_and_services', to: 'goods_and_services#create'
+  post '/trade_request_skills', to: 'trade_request_skills#create'
 
   post '/login', to: 'users#login'
   post '/signup', to: 'users#create'

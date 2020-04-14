@@ -18,7 +18,7 @@ class TradeRequestsController < ApplicationController
 
   # POST /trade_request
   def create
-    @trade_request = TradeRequest.new(status: params[:status])
+    @trade_request = TradeRequest.new(initiating_user_id: params[:initiating_user_id], receiving_user_id: params[:receiving_user_id], status: params[:status], initiator_complete: params[:initiator_complete], receiver_complete: params[:receiver_complete])
 
     if @trade_request.save
       render json: @trade_request, status: :created, location: @trade_request
@@ -51,6 +51,6 @@ class TradeRequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def trade_request_params
-    params.require(:trade_request).permit(:id, :status)
+    params.require(:trade_request).permit(:id, :initiating_user_id, :receiving_user_id, :status, :initiator_complete, :receiver_complete)
   end
 end

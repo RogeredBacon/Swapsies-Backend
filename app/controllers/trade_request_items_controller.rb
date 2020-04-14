@@ -10,15 +10,20 @@ class TradeRequestItemsController < ApplicationController
     render json: @trade_request_items
   end
 
-    # GET /trade_requests/1
-    def show
-      @trade_request_item = TradeRequestItem.find_by(id: params[:id])
-      render json: @trade_request_item
-    end
+  # GET /trade_requests/1
+  def show
+    @trade_request_item = TradeRequestItem.find_by(id: params[:id])
+    render json: @trade_request_item
+  end
 
   # POST /trade_request
   def create
-    @trade_request_item = TradeRequestItem.new(trade_request_id: params[:trade_request_id], items_id: params[:items_id], locked: params[:locked], amount: params[:amount])
+    @trade_request_item = TradeRequestItem.new(
+      trade_request_id: params[:trade_request_id],
+      item_id: params[:item_id],
+      locked: params[:locked],
+      amount: params[:amount]
+    )
 
     if @trade_request_item.save
       render json: @trade_request_item, status: :created, location: @trade_request_item
@@ -50,7 +55,7 @@ class TradeRequestItemsController < ApplicationController
   # end
 
   # Only allow a trusted parameter "white list" through.
-  def trade_request_items_params
-    params.require(:trade_request_items).permit(:id, :trade_request_id, :items_id, :locked, :amount)
+  def trade_request_item_params
+    params.require(:trade_request_item).permit(:id, :trade_request_id, :item_id, :locked, :amount)
   end
 end
