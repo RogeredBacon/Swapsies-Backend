@@ -62,7 +62,7 @@ class UsersController < ApplicationController
       @partners[@user.id] = "#{@user.first_name} #{@user.last_name}"
     end
     render json: @partners
-end
+  end
 
   # PATCH/PUT /users/1
   def update
@@ -79,11 +79,6 @@ end
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  # def set_user
-  #   @user = User.find(params[:id])
-  # end
 
   # Only allow a trusted parameter "white list" through.
   def user_params
