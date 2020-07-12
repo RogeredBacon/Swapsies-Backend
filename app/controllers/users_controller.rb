@@ -40,8 +40,28 @@ class UsersController < ApplicationController
   # POST /user/:id/goods
   def user_goods
     @user = User.find_by(id: params[:id])
-    @goods = GoodsAndService.all.where(user_id: @user.id).order(created_at: :desc)
-    render json: @goods
+    @items = Item.all.where(user_id: @user.id).order(created_at: :desc)
+    @skills = Skill.all.where(user_id: @user.id).order(created_at: :desc)
+    render json: @items + @skills
+  end
+
+  def user_partners
+    @current_user = User.find_by(id: params[:id])
+    @initiating_trades = TradeRequest.all.where(initiating_user_id: @current_user.id).order(updated_at: :desc)
+    @receiving_trades = TradeRequest.all.where(receiving_user_id: @current_user.id).order(updated_at: :desc)
+
+    @partners = {}
+
+    @initiating_trades.map do |e|
+      @user = User.find_by(id: e.receiving_user_id)
+      @partners[@user.id] = "#{@user.first_name} #{@user.last_name}"
+    end
+
+    @receiving_trades.map do |e|
+      @user = User.find_by(id: e.initiating_user_id)
+      @partners[@user.id] = "#{@user.first_name} #{@user.last_name}"
+    end
+    render json: @partners
   end
 
   # PATCH/PUT /users/1
@@ -59,11 +79,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  # def set_user
-  #   @user = User.find(params[:id])
-  # end
 
   # Only allow a trusted parameter "white list" through.
   def user_params

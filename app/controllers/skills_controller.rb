@@ -44,11 +44,6 @@ class SkillsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  # def set_user
-  #   @user = User.find(params[:id])
-  # end
-
   # Only allow a trusted parameter "white list" through.
   def skill_params
     params.require(:skill).permit(:id, :user_id, :title, :subtitle, :description, :worth_rating, :image, :session_time)
