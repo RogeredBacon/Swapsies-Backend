@@ -28,6 +28,14 @@ class TradeRequestSkillsController < ApplicationController
     end
   end
 
+  def update
+    if @trade_request_skill.update(trade_request_skill_params)
+      render json: @trade_request_skill
+    else
+      render json: @trade_request_skill.errors, status: :unprocessable_entity
+    end
+end
+
   # DELETE /users/1
   def destroy
     @skill.destroy

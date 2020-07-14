@@ -33,6 +33,14 @@ class TradeRequestItemsController < ApplicationController
     end
   end
 
+  def update
+    if @trade_request_item.update(trade_request_item_params)
+      render json: @trade_request_item
+    else
+      render json: @trade_request_item.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /users/1
   def destroy
     @item.destroy
