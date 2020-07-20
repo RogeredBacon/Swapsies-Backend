@@ -43,7 +43,8 @@ class TradeRequestItemsController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @item.destroy
+    @trade_request_item = TradeRequestItem.find_by(id: params[:id])
+    @trade_request_item.destroy
   end
 
   private
