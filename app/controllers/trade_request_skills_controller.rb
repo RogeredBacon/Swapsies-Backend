@@ -38,7 +38,14 @@ end
 
   # DELETE /users/1
   def destroy
-    @skill.destroy
+    @trade_request_skill = TradeRequestSkill.find_by(skill_id: params[:skill_id], trade_request_id: params[:trade_request_id])
+    if @trade_request_skill.present?
+      @trade_request_skill.destroy
+      render json: @trade_request_skill
+    else
+      puts 'failed'
+      render json: @trade_request_skill.errors, status: :unprocessable_entity
+    end
   end
 
   private

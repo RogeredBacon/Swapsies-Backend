@@ -19,11 +19,11 @@ Rails.application.routes.draw do
   get '/trade_requests_user/:id', to: 'trade_requests#user_trades'
 
   post '/trade_request_items', to: 'trade_request_items#create'
-  delete '/trade_request_items/:id', to: 'trade_request_items#destroy'
+  delete '/trade_request_items/:item_id/:trade_request_id', to: 'trade_request_items#destroy'
   patch '/trade_request_items/:id', to: 'trade_request_items#update'
 
   post '/trade_request_skills', to: 'trade_request_skills#create'
-  delete '/trade_request_skills/:id', to: 'trade_request_skills#destroy'
+  delete '/trade_request_skills/:skill_id/:trade_request_id', to: 'trade_request_skills#destroy'
   patch '/trade_request_skills/:id', to: 'trade_request_skills#update'
 
   post '/login', to: 'users#login'

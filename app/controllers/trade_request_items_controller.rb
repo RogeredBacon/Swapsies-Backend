@@ -43,8 +43,14 @@ class TradeRequestItemsController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @trade_request_item = TradeRequestItem.find_by(id: params[:id])
-    @trade_request_item.destroy
+    @trade_request_item = TradeRequestItem.find_by(item_id: params[:item_id], trade_request_id: params[:trade_request_id])
+    if @trade_request_item.present?
+      @trade_request_item.destroy
+      render json: @trade_request_item
+    else
+      puts 'failed'
+      render json: @trade_request_item.errors, status: :unprocessable_entity
+    end
   end
 
   private
