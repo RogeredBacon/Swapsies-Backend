@@ -29,19 +29,21 @@ class TradeRequestSkillsController < ApplicationController
   end
 
   def update
+    @trade_request_skill = TradeRequestSkill.find_by(skill_id: trade_request_skill_params[:skill_id], trade_request_id: trade_request_skill_params[:trade_request_id])
+
     if @trade_request_skill.update(trade_request_skill_params)
-      render json: @trade_request_skill
+      render json: @trade_request_skill, status: :created, location: @trade_request_skill
     else
       render json: @trade_request_skill.errors, status: :unprocessable_entity
     end
-end
+  end
 
-  # DELETE /users/1
+  # DELETE
   def destroy
     @trade_request_skill = TradeRequestSkill.find_by(skill_id: params[:skill_id], trade_request_id: params[:trade_request_id])
-    if @trade_request_skill.present?
-      @trade_request_skill.destroy
-      render json: @trade_request_skill
+
+    if @trade_request_skill.destroy
+      render json: @trade_request_skill, status: :accepted, location: @trade_request_skill
     else
       puts 'failed'
       render json: @trade_request_skill.errors, status: :unprocessable_entity
