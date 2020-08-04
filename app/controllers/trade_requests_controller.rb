@@ -35,6 +35,23 @@ class TradeRequestsController < ApplicationController
     render json: @initiating_trades + @receiving_trades
   end
 
+  def status
+    @trade = TradeRequest.find_by(id: params[:id])
+
+    @trade.status = if params[:user].to_i == @trade.receiving_user_id
+                      'Awaiting initiator'
+                    else
+                      'Awaiting receiver'
+                    end
+
+    if @trade.save
+      render json: @trade, status: :created, location: @trade
+    else
+      puts 'failed'
+      render json: @trade.errors, status: :unprocessable_entity
+    end
+  end
+
   def goods
     @user = User.find_by(id: params[:user])
     @requests_items = TradeRequestItem.all.where(trade_request_id: params[:id]).order(updated_at: :desc)

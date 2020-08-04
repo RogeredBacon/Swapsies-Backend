@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get '/users_partners/:id', to: 'users#user_partners'
 
   post '/trade_requests', to: 'trade_requests#create'
-
+  patch '/trade_requests/:id/status/:user', to: 'trade_requests#status'
   get '/trade_requests/:id/goods/:user', to: 'trade_requests#goods'
 
   get '/trade_requests_user/:id', to: 'trade_requests#user_trades'
