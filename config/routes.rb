@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   post '/trade_requests', to: 'trade_requests#create'
   patch '/trade_requests/:id/status/:user', to: 'trade_requests#status'
-  patch '/trade_requests/:id/commit/:user', to: 'trade_requests#commit'
+  patch '/trade_requests/:id/commit/:user/:toggle', to: 'trade_requests#commit'
 
   get '/trade_requests/:id/goods/:user', to: 'trade_requests#goods'
 

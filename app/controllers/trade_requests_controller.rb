@@ -55,10 +55,18 @@ class TradeRequestsController < ApplicationController
   def commit
     @trade = TradeRequest.find_by(id: params[:id])
 
-    if params[:user].to_i == @trade.receiving_user_id
-      @trade.receiver_complete = !@trade.receiver_complete
+    if params[:toggle]
+      if params[:user].to_i == @trade.receiving_user_id
+        @trade.receiver_complete = !@trade.receiver_complete
+      else
+        @trade.initiator_complete = !@trade.initiator_complete
+      end
     else
-      @trade.initiator_complete = !@trade.initiator_complete
+      if params[:user].to_i == @trade.receiving_user_id
+        @trade.receiver_complete = false
+      else
+        @trade.initiator_complete = false
+      end
     end
 
     if @trade.save
