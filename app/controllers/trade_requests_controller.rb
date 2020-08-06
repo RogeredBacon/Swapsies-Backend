@@ -52,6 +52,23 @@ class TradeRequestsController < ApplicationController
     end
   end
 
+  def commit
+    @trade = TradeRequest.find_by(id: params[:id])
+
+    if params[:user].to_i == @trade.receiving_user_id
+      @trade.receiver_complete = !@trade.receiver_complete
+    else
+      @trade.initiator_complete = !@trade.initiator_complete
+    end
+
+    if @trade.save
+      render json: @trade, status: :created, location: @trade
+    else
+      puts 'failed'
+      render json: @trade.errors, status: :unprocessable_entity
+    end
+  end
+
   def goods
     @user = User.find_by(id: params[:user])
     @requests_items = TradeRequestItem.all.where(trade_request_id: params[:id]).order(updated_at: :desc)
