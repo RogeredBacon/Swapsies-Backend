@@ -52,6 +52,19 @@ class TradeRequestsController < ApplicationController
     end
   end
 
+  def status_committed
+    @trade = TradeRequest.find_by(id: params[:id])
+
+    @trade.status = 'Committed'
+
+    if @trade.save
+      render json: @trade, status: :created, location: @trade
+    else
+      puts 'failed'
+      render json: @trade.errors, status: :unprocessable_entity
+    end
+  end
+
   def commit
     @trade = TradeRequest.find_by(id: params[:id])
 
