@@ -18,7 +18,7 @@ class TradeRequestsController < ApplicationController
 
   # POST /trade_request
   def create
-    @trade_request = TradeRequest.new(initiating_user_id: params[:initiating_user_id], receiving_user_id: params[:receiving_user_id], status: params[:status], initiator_complete: params[:initiator_complete], receiver_complete: params[:receiver_complete])
+    @trade_request = TradeRequest.new(initiating_user_id: params[:initiating_user_id], receiving_user_id: params[:receiving_user_id], status: params[:status], initiator_complete: params[:initiator_complete], receiver_complete: params[:receiver_complete], initiator_finalised: params[:initiator_finalised], receiver_finalised: params[:receiver_finalised])
 
     if @trade_request.save
       render json: @trade_request, status: :created, location: @trade_request
@@ -56,6 +56,31 @@ class TradeRequestsController < ApplicationController
     @trade = TradeRequest.find_by(id: params[:id])
 
     @trade.status = 'Committed'
+
+    if @trade.save
+      render json: @trade, status: :created, location: @trade
+    else
+      puts 'failed'
+      render json: @trade.errors, status: :unprocessable_entity
+    end
+  end
+
+  def complete
+    @trade = TradeRequest.find_by(id: params[:id])
+
+    if params[:user].to_i == @trade.receiving_user_id && @trade.initiator_finalised == false
+      @trade.receiver_finalised = true
+    elsif params[:user].to_i == @trade.initiating_user_id && !@trade.receiver_finalised == false
+      @trade.initiator_finalised = true
+    elsif params[:user].to_i == @trade.receiving_user_id && @trade.initiator_finalised == true
+      @trade.initiator_finalised = true
+      @trade.receiver_finalised = true
+      @trade.status = 'Complete'
+    elsif params[:user].to_i == @trade.initiating_user_id && @trade.receiver_finalised == true
+      @trade.initiator_finalised = true
+      @trade.receiver_finalised = true
+      @trade.status = 'Complete'
+    end
 
     if @trade.save
       render json: @trade, status: :created, location: @trade
@@ -133,6 +158,6 @@ class TradeRequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def trade_request_params
-    params.require(:trade_request).permit(:id, :initiating_user_id, :receiving_user_id, :status, :initiator_complete, :receiver_complete)
+    params.require(:trade_request).permit(:id, :initiating_user_id, :receiving_user_id, :status, :initiator_complete, :receiver_complete, :initiator_finalised, :receiver_finalised)
   end
 end
