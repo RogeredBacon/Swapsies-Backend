@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(version: 20_200_312_173_107) do
     t.bigint 'initiating_user_id', null: false
     t.bigint 'receiving_user_id', null: false
     t.string 'status'
+    t.boolean 'initiator_finalised'
+    t.boolean 'receiver_finalised'
     t.boolean 'initiator_complete'
     t.boolean 'receiver_complete'
     t.datetime 'created_at', precision: 6, null: false
